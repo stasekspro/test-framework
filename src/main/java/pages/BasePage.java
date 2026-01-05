@@ -14,6 +14,5 @@ public abstract class BasePage {
         this.wait = new WebDriverWait(chrome, Duration.ofSeconds(10));
     }
 
-
     public abstract boolean isPageLoaded();
 }

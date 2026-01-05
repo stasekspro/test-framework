@@ -4,10 +4,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -27,40 +23,28 @@ public class OnlinerTests extends BaseTest {
 
     @Test
     public void displayCurrencyAndWeatherOnHomePage() {
+        HomePage homePage = new HomePage(chrome);
 
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector(".b-top-navigation")));
-        WebElement courses = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("ul[class*=\"helpers_hide_desktop\"] span[class*=\"currency-amount\"]")));
-        WebElement weather = chrome.findElement(
-                By.cssSelector("ul[class*=\"helpers_hide_desktop\"] span[class*=\"js-weather\"]"));
         Assertions.assertAll(
-                () -> Assertions.assertTrue(courses.isDisplayed(), "Курсов нет"),
-                () -> Assertions.assertTrue(weather.isDisplayed(), "Погоды нет!"));
+                () -> Assertions.assertTrue(homePage.isCurrencyDisplayed(), "Курсов нет"),
+                () -> Assertions.assertTrue(homePage.isWeatherDisplayed(), "Погоды нет!"));
     }
 
 
     @Test
     public void displayCatalogMenuButtonsonHomePage() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary")));
-
-        List<WebElement> items = chrome.findElements(By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary li a"));
-        List<String> actual = new ArrayList<>();
-        for (WebElement element : items) {
-            actual.add(element.getText().trim());
-        }
-
+        HomePage homePage = new HomePage(chrome);
+        List<String> actual = homePage.getCatalogMenuItems();
         List<String> expected = Arrays.asList(
-                "Apple iPhone",
+                "Время исполнения желаний",
                 "Мобильные телефоны",
-                "Автомобильные шины",
-                "Телевизоры",
-                "Стиральные машины",
-                "Холодильники",
-                "Ноутбуки",
-                "Мониторы",
                 "Видеокарты",
-                "Планшеты"
+                "Телевизоры",
+                "Ноутбуки",
+                "Планшеты",
+                "Мониторы",
+                "Стиральные машины",
+                "Компьютеры"
         );
 
         Assertions.assertEquals(expected, actual, "Элементы меню отличаются от ожидаемых!");
@@ -68,22 +52,15 @@ public class OnlinerTests extends BaseTest {
 
     @ParameterizedTest(name = "Проверка дропдауна: {1}")
     @CsvSource({
-            "1, Новости",
+            "2, Новости",
             "3, Автобарахолка",
-            "5, Дома и квартиры"
+            "4, Дома и квартиры"
     })
-
     public void checkDropdownOpensInHomePage(int menuIndex, String dropdownName) {
-        WebElement menuItem = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("li.b-main-navigation__item:nth-child(" + menuIndex + ") > span.b-main-navigation__text")
-        ));
+        HomePage homePage = new HomePage(chrome);
 
-        actions.moveToElement(menuItem).perform();
-
-        WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("li.b-main-navigation__item:nth-child(" + menuIndex + ") > div.b-main-navigation__dropdown")
-        ));
-
-        assertTrue(dropdown.isDisplayed(), "Дропдаун '" + dropdownName + "' не открылся");
+        homePage.hoverOnMenuItem(menuIndex);
+        assertTrue(homePage.isDropdownDisplayed(menuIndex),
+                "Дропдаун '" + dropdownName + "' не открылся");
     }
 }
