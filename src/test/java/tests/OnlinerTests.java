@@ -26,10 +26,9 @@ public class OnlinerTests extends BaseTest {
         HomePage homePage = new HomePage(chrome);
 
         Assertions.assertAll(
-                () -> Assertions.assertTrue(homePage.isCurrencyDisplayed(), "Курсов нет"),
-                () -> Assertions.assertTrue(homePage.isWeatherDisplayed(), "Погоды нет!"));
+                () -> Assertions.assertTrue(homePage.currency.isDisplayed(), "Курсов нет"),
+                () -> Assertions.assertTrue(homePage.weather.isDisplayed(), "Погоды нет!"));
     }
-
 
     @Test
     public void displayCatalogMenuButtonsonHomePage() {

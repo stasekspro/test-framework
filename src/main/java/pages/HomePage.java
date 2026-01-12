@@ -9,9 +9,14 @@ import java.util.List;
 
 public class HomePage extends BasePage {
     private final Button cartButton;
-    private final Label currency;
-    private final Label weather;
+    public final Label currency;
+    public final Label weather;
     private final Actions actions;
+    private final By catalogMenuLocator;
+    private final By catalogMenuContainerLocator;
+    private final By menuItemsLocator;
+    private final By menuItemTextLocator;
+    private final By menuDropdownLocator;
 
     public HomePage(WebDriver chrome) {
         super(chrome);
@@ -24,6 +29,11 @@ public class HomePage extends BasePage {
         weather = new Label(chrome,
                 By.cssSelector("ul[class*=\"helpers_hide_desktop\"] span[class*=\"js-weather\"]"),
                 "Погода");
+        catalogMenuLocator = By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary li a");
+        catalogMenuContainerLocator = By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary");
+        menuItemsLocator = By.cssSelector("li.b-main-navigation__item");
+        menuItemTextLocator = By.cssSelector("span.b-main-navigation__text");
+        menuDropdownLocator = By.cssSelector("div.b-main-navigation__dropdown");
     }
 
     @Override
@@ -43,43 +53,34 @@ public class HomePage extends BasePage {
         return cartPage;
     }
 
-    public boolean isCurrencyDisplayed() {
-        return currency.isDisplayed();
-    }
-
-    public boolean isWeatherDisplayed() {
-        return weather.isDisplayed();
-    }
 
     public List<String> getCatalogMenuItems() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary")));
-
-        List<WebElement> items = chrome.findElements(
-                By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary li a"));
-
+        wait.until(ExpectedConditions.visibilityOfElementLocated(catalogMenuContainerLocator));
+        List<WebElement> items = chrome.findElements(catalogMenuLocator);
         List<String> menuTexts = new ArrayList<>();
         for (WebElement element : items) {
             menuTexts.add(element.getText().trim());
         }
-
         return menuTexts;
     }
 
     public void hoverOnMenuItem(int menuIndex) {
-        WebElement menuItem = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("li.b-main-navigation__item:nth-child(" + menuIndex + ") > span.b-main-navigation__text")
-        ));
-        actions.moveToElement(menuItem).perform();
+        List<WebElement> menuItems = chrome.findElements(menuItemsLocator);
+        if (menuIndex < 1 || menuIndex > menuItems.size()) {
+            throw new IllegalArgumentException("Invalid menu index: " + menuIndex);
+        }
+        WebElement menuItem = menuItems.get(menuIndex - 1);
+        WebElement span = menuItem.findElement(menuItemTextLocator);
+        actions.moveToElement(span).perform();
     }
 
     public boolean isDropdownDisplayed(int menuIndex) {
         try {
-            WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.cssSelector("li.b-main-navigation__item:nth-child(" + menuIndex + ") > div.b-main-navigation__dropdown")
-            ));
+            List<WebElement> menuItems = chrome.findElements(menuItemsLocator);
+            WebElement menuItem = menuItems.get(menuIndex - 1);
+            WebElement dropdown = menuItem.findElement(menuDropdownLocator);
             return dropdown.isDisplayed();
-        } catch (TimeoutException e) {
+        } catch (Exception e) {
             return false;
         }
     }
