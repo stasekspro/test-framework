@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import pages.HomePage;
-
+import pages.MenuItem;
 
 
 public class OnlinerTests extends BaseTest {
@@ -57,9 +57,10 @@ public class OnlinerTests extends BaseTest {
     })
     public void checkDropdownOpensInHomePage(int menuIndex, String dropdownName) {
         HomePage homePage = new HomePage(chrome);
+        MenuItem menuItem = homePage.getMenuItem(menuIndex);
 
-        homePage.hoverOnMenuItem(menuIndex);
-        assertTrue(homePage.isDropdownDisplayed(menuIndex),
+        menuItem.openDropdown();
+        assertTrue(menuItem.isDropdownDisplayed(),
                 "Дропдаун '" + dropdownName + "' не открылся");
     }
 }

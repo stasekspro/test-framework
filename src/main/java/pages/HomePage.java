@@ -1,7 +1,6 @@
 package pages;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import java.util.ArrayList;
@@ -11,16 +10,13 @@ public class HomePage extends BasePage {
     private final Button cartButton;
     public final Label currency;
     public final Label weather;
-    private final Actions actions;
     private final By catalogMenuLocator;
     private final By catalogMenuContainerLocator;
     private final By menuItemsLocator;
-    private final By menuItemTextLocator;
-    private final By menuDropdownLocator;
+
 
     public HomePage(WebDriver chrome) {
         super(chrome);
-        this.actions = new Actions(chrome);
 
         cartButton = new Button(chrome, By.cssSelector("a.auth-bar__item--cart"), "Иконка корзины");
         currency = new Label(chrome,
@@ -32,8 +28,6 @@ public class HomePage extends BasePage {
         catalogMenuLocator = By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary li a");
         catalogMenuContainerLocator = By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary");
         menuItemsLocator = By.cssSelector("li.b-main-navigation__item");
-        menuItemTextLocator = By.cssSelector("span.b-main-navigation__text");
-        menuDropdownLocator = By.cssSelector("div.b-main-navigation__dropdown");
     }
 
     @Override
@@ -64,24 +58,13 @@ public class HomePage extends BasePage {
         return menuTexts;
     }
 
-    public void hoverOnMenuItem(int menuIndex) {
+    public MenuItem getMenuItem(int index) {
         List<WebElement> menuItems = chrome.findElements(menuItemsLocator);
-        if (menuIndex < 1 || menuIndex > menuItems.size()) {
-            throw new IllegalArgumentException("Invalid menu index: " + menuIndex);
+        if (index < 1 || index > menuItems.size()) {
+            throw new IllegalArgumentException("Invalid menu index: " + index);
         }
-        WebElement menuItem = menuItems.get(menuIndex - 1);
-        WebElement span = menuItem.findElement(menuItemTextLocator);
-        actions.moveToElement(span).perform();
-    }
+        WebElement menuElement = menuItems.get(index - 1);
+        return new MenuItem(chrome, menuElement);
 
-    public boolean isDropdownDisplayed(int menuIndex) {
-        try {
-            List<WebElement> menuItems = chrome.findElements(menuItemsLocator);
-            WebElement menuItem = menuItems.get(menuIndex - 1);
-            WebElement dropdown = menuItem.findElement(menuDropdownLocator);
-            return dropdown.isDisplayed();
-        } catch (Exception e) {
-            return false;
-        }
     }
 }
