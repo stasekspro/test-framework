@@ -18,7 +18,6 @@ public class BaseTest {
     public void setUp() {
 
         ChromeOptions options = new ChromeOptions();
-        options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
         options.addArguments("--start-maximized");
 
         chrome = new ChromeDriver(options);
