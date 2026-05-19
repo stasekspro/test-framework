@@ -4,13 +4,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import pages.HomePage;
-import pages.MenuItem;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+
 
 
 public class OnlinerTests extends BaseTest {
@@ -25,48 +27,63 @@ public class OnlinerTests extends BaseTest {
 
     @Test
     public void displayCurrencyAndWeatherOnHomePage() {
-        HomePage homePage = new HomePage(chrome);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("li.top-informer-weather.js-weather-widget a")));
 
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector(".b-top-navigation")));
+        WebElement courses = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("ul[class*=\"helpers_hide_desktop\"] span[class*=\"currency-amount\"]")));
+        WebElement weather = chrome.findElement(
+                By.cssSelector("ul[class*=\"helpers_hide_desktop\"] span[class*=\"js-weather\"]"));
         Assertions.assertAll(
-                () -> Assertions.assertTrue(homePage.currency.isDisplayed(), "Курсов нет"),
-                () -> Assertions.assertTrue(homePage.weather.isDisplayed(), "Погоды нет!"));
+                () -> Assertions.assertTrue(courses.isDisplayed(), "Курсов нет"),
+                () -> Assertions.assertTrue(weather.isDisplayed(), "Погоды нет!"));
     }
+
 
     @Test
     public void displayCatalogMenuButtonsonHomePage() {
-        HomePage homePage = new HomePage(chrome);
-        List<String> actual = homePage.getCatalogMenuItems();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary")));
 
-        actual.removeIf(String::isEmpty);
-        assertTrue(!actual.isEmpty(), "Список товаров в меню пустой!");
-        List<String> alwaysPresent = Arrays.asList(
+        List<WebElement> items = chrome.findElements(By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary li a"));
+        List<String> actual = new ArrayList<>();
+        for (WebElement element : items) {
+            actual.add(element.getText().trim());
+        }
+
+        List<String> expected = Arrays.asList(
+                "Apple iPhone",
                 "Мобильные телефоны",
-                "Ноутбуки",
+                "Автомобильные шины",
                 "Телевизоры",
                 "Стиральные машины",
-                "Мониторы"
+                "Холодильники",
+                "Ноутбуки",
+                "Мониторы",
+                "Видеокарты",
+                "Планшеты"
         );
 
-        for (String item : alwaysPresent) {
-            assertTrue(actual.contains(item),
-                    "Ожидаемый элемент не найден в меню: " + item);
-        }
+        Assertions.assertEquals(expected, actual, "Элементы меню отличаются от ожидаемых!");
     }
 
     @ParameterizedTest(name = "Проверка дропдауна: {1}")
     @CsvSource({
-            "2, Новости",
+            "1, Новости",
             "3, Автобарахолка",
-            "4, Дома и квартиры"
+            "5, Дома и квартиры"
     })
-    public void checkDropdownOpensInHomePage(int menuIndex, String dropdownName) {
-        HomePage homePage = new HomePage(chrome);
-        MenuItem menuItem = homePage.getMenuItem(menuIndex);
 
-        menuItem.openDropdown();
-        assertTrue(menuItem.isDropdownDisplayed(),
-                "Дропдаун '" + dropdownName + "' не открылся");
+    public void checkDropdownOpensInHomePage(int menuIndex, String dropdownName) {
+        WebElement menuItem = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("li.b-main-navigation__item:nth-child(" + menuIndex + ") > span.b-main-navigation__text")
+        ));
+
+        actions.moveToElement(menuItem).perform();
+
+        WebElement dropdown = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("li.b-main-navigation__item:nth-child(" + menuIndex + ") > div.b-main-navigation__dropdown")
+        ));
+
+        assertTrue(dropdown.isDisplayed(), "Дропдаун '" + dropdownName + "' не открылся");
     }
 }

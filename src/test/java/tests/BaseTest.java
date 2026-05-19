@@ -1,5 +1,4 @@
 package tests;
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
@@ -17,9 +16,10 @@ public class BaseTest {
 
     @BeforeEach
     public void setUp() {
-        WebDriverManager.chromedriver().setup();
+        System.setProperty("webdriver.chrome.driver", "C:\\chromedriver-win64\\chromedriver.exe");
 
         ChromeOptions options = new ChromeOptions();
+        options.setBinary("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe");
         options.addArguments("--start-maximized");
 
         chrome = new ChromeDriver(options);
