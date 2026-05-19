@@ -34,7 +34,11 @@ public class HomePage extends BasePage {
     public boolean isPageLoaded() {
         try {
             WebElement topNavigation = chrome.findElement(By.cssSelector(".b-top-navigation"));
-            return topNavigation.isDisplayed();
+            WebElement currencyWidget = chrome.findElement(By.cssSelector("li.top-informer-currency a.b-top-navigation-informers__link"));
+            WebElement weatherWidget = chrome.findElement(By.cssSelector("li.top-informer-weather a.b-top-navigation-informers__link"));
+            return topNavigation.isDisplayed()
+                    && currencyWidget.isDisplayed()
+                    && weatherWidget.isDisplayed();
         } catch (NoSuchElementException | TimeoutException e) {
             return false;
         }
