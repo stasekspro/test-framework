@@ -26,8 +26,7 @@ public class OnlinerTests extends BaseTest {
     @Test
     public void displayCurrencyAndWeatherOnHomePage() {
         HomePage homePage = new HomePage(chrome);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(
-                By.cssSelector("li.top-informer-weather.js-weather-widget a")));
+        wait.until(driver -> homePage.isPageLoaded());
 
         Assertions.assertAll(
                 () -> Assertions.assertTrue(homePage.currency.isDisplayed(), "Курсов нет"),
