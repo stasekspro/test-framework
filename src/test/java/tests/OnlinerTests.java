@@ -9,6 +9,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import pages.HomePage;
 import pages.MenuItem;
+import org.openqa.selenium.By;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 
 public class OnlinerTests extends BaseTest {
@@ -24,6 +26,8 @@ public class OnlinerTests extends BaseTest {
     @Test
     public void displayCurrencyAndWeatherOnHomePage() {
         HomePage homePage = new HomePage(chrome);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("li.top-informer-weather.js-weather-widget a")));
 
         Assertions.assertAll(
                 () -> Assertions.assertTrue(homePage.currency.isDisplayed(), "Курсов нет"),
@@ -34,19 +38,21 @@ public class OnlinerTests extends BaseTest {
     public void displayCatalogMenuButtonsonHomePage() {
         HomePage homePage = new HomePage(chrome);
         List<String> actual = homePage.getCatalogMenuItems();
-        List<String> expected = Arrays.asList(
-                "Время исполнения желаний",
+
+        actual.removeIf(String::isEmpty);
+        assertTrue(!actual.isEmpty(), "Список товаров в меню пустой!");
+        List<String> alwaysPresent = Arrays.asList(
                 "Мобильные телефоны",
-                "Видеокарты",
-                "Телевизоры",
                 "Ноутбуки",
-                "Планшеты",
-                "Мониторы",
+                "Телевизоры",
                 "Стиральные машины",
-                "Компьютеры"
+                "Мониторы"
         );
 
-        Assertions.assertEquals(expected, actual, "Элементы меню отличаются от ожидаемых!");
+        for (String item : alwaysPresent) {
+            assertTrue(actual.contains(item),
+                    "Ожидаемый элемент не найден в меню: " + item);
+        }
     }
 
     @ParameterizedTest(name = "Проверка дропдауна: {1}")

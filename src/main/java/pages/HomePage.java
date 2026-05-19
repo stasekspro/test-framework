@@ -20,10 +20,10 @@ public class HomePage extends BasePage {
 
         cartButton = new Button(chrome, By.cssSelector("a.auth-bar__item--cart"), "Иконка корзины");
         currency = new Label(chrome,
-                By.cssSelector("ul[class*=\"helpers_hide_desktop\"] span[class*=\"currency-amount\"]"),
+                By.cssSelector("li.top-informer-currency a.b-top-navigation-informers__link"),
                 "Валюта");
         weather = new Label(chrome,
-                By.cssSelector("ul[class*=\"helpers_hide_desktop\"] span[class*=\"js-weather\"]"),
+                By.cssSelector("li.top-informer-weather.js-weather-widget a.b-top-navigation-informers__link"),
                 "Погода");
         catalogMenuLocator = By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary li a");
         catalogMenuContainerLocator = By.cssSelector("ul.project-navigation__list.project-navigation__list_secondary");
