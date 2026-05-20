@@ -28,7 +28,7 @@ public class OnlinerTests extends BaseTest {
         HomePage homePage = new HomePage(chrome);
 
         Assertions.assertAll(
-                () -> Assertions.assertTrue(homePage.currency.isDisplayed(), "Курсов нет"),
+                () -> Assertions.assertTrue(homePage.isCurrencyLoaded(), "Курсов нет"),
                 () -> Assertions.assertTrue(homePage.isWeatherLoaded(), "Погоды нет!"));
     }
 
