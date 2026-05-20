@@ -18,8 +18,10 @@ public class BaseTest {
     public void setUp() {
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maximized");
-
+        options.addArguments("--headless=new");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
         chrome = new ChromeDriver(options);
         actions = new Actions(chrome);
         wait = new WebDriverWait(chrome, Duration.ofSeconds(10));
