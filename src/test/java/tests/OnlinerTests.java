@@ -7,17 +7,17 @@ import org.junit.jupiter.params.provider.CsvSource;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import pages.CartPage;
 import pages.HomePage;
-import pages.MenuItem;
-import org.openqa.selenium.By;
-import org.openqa.selenium.support.ui.ExpectedConditions;
+import elements.MenuItem;
 
 
 public class OnlinerTests extends BaseTest {
     @Test
     public void openCartPageWhenCartIconClicked() {
-        pages.HomePage homePage = new HomePage(chrome);
-        pages.CartPage cartPage = homePage.openCart();
+        HomePage homePage = new HomePage(chrome);
+        CartPage cartPage = homePage.openCart();
 
         assertTrue(cartPage.isPageLoaded(), "Страница корзины не загрузилась");
         assertTrue(cartPage.isCartFormDisplayed(), "Форма корзины не отображается");
@@ -26,21 +26,19 @@ public class OnlinerTests extends BaseTest {
     @Test
     public void displayCurrencyAndWeatherOnHomePage() {
         HomePage homePage = new HomePage(chrome);
-        wait.until(driver -> homePage.isPageLoaded());
 
         Assertions.assertAll(
                 () -> Assertions.assertTrue(homePage.currency.isDisplayed(), "Курсов нет"),
-                () -> Assertions.assertTrue(homePage.weather.isDisplayed(), "Погоды нет!"));
+                () -> Assertions.assertTrue(homePage.isWeatherLoaded(), "Погоды нет!"));
     }
 
     @Test
     public void displayCatalogMenuButtonsonHomePage() {
         HomePage homePage = new HomePage(chrome);
-        List<String> actual = homePage.getCatalogMenuItems();
+        List<String> menuItems = homePage.getCatalogMenuItems();
 
-        actual.removeIf(String::isEmpty);
-        assertTrue(!actual.isEmpty(), "Список товаров в меню пустой!");
-        List<String> alwaysPresent = Arrays.asList(
+        assertTrue(!menuItems.isEmpty(), "Список товаров в меню пустой!");
+        List<String> expectedMenuItems = Arrays.asList(
                 "Мобильные телефоны",
                 "Ноутбуки",
                 "Телевизоры",
@@ -48,8 +46,8 @@ public class OnlinerTests extends BaseTest {
                 "Мониторы"
         );
 
-        for (String item : alwaysPresent) {
-            assertTrue(actual.contains(item),
+        for (String item : expectedMenuItems) {
+            assertTrue(menuItems.contains(item),
                     "Ожидаемый элемент не найден в меню: " + item);
         }
     }

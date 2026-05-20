@@ -1,8 +1,10 @@
 package pages;
 
+import elements.Button;
+import elements.Label;
+import elements.MenuItem;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,11 +36,7 @@ public class HomePage extends BasePage {
     public boolean isPageLoaded() {
         try {
             WebElement topNavigation = chrome.findElement(By.cssSelector(".b-top-navigation"));
-            WebElement currencyWidget = chrome.findElement(By.cssSelector("li.top-informer-currency a.b-top-navigation-informers__link"));
-            WebElement weatherWidget = chrome.findElement(By.cssSelector("li.top-informer-weather a.b-top-navigation-informers__link"));
-            return topNavigation.isDisplayed()
-                    && currencyWidget.isDisplayed()
-                    && weatherWidget.isDisplayed();
+            return topNavigation.isDisplayed();
         } catch (NoSuchElementException | TimeoutException e) {
             return false;
         }
@@ -59,6 +57,7 @@ public class HomePage extends BasePage {
         for (WebElement element : items) {
             menuTexts.add(element.getText().trim());
         }
+        menuTexts.removeIf(String::isEmpty);
         return menuTexts;
     }
 
@@ -70,5 +69,13 @@ public class HomePage extends BasePage {
         WebElement menuElement = menuItems.get(index - 1);
         return new MenuItem(chrome, menuElement);
 
+    }
+    public boolean isWeatherLoaded() {
+        try {
+            weather.waitUntilVisible();
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 }
