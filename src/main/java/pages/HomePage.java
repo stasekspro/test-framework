@@ -77,5 +77,14 @@ public class HomePage extends BasePage {
         } catch (TimeoutException e) {
             return false;
         }
+
+    }
+    public boolean isCurrencyLoaded() {
+        try {
+            currency.waitUntilVisible();
+            return true;
+        } catch (TimeoutException e) {
+            return false;
+        }
     }
 }
