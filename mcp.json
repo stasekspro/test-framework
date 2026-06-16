@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "description": "Browser automation via Playwright — use to inspect onliner.by elements, find CSS selectors, and verify UI behavior"
+    }
+  }
+}
