@@ -21,6 +21,12 @@ public class BaseTest {
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--start-maximized");
+        if (System.getenv("CI") != null) {
+            options.addArguments("--headless=new");
+            options.addArguments("--no-sandbox");
+            options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--window-size=1920,1080");
+        }
 
         chrome = new ChromeDriver(options);
         actions = new Actions(chrome);
