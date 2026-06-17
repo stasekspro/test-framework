@@ -21,12 +21,6 @@ BasePage     ←  HomePage, CartPage
 BaseTest     ←  OnlinerTests
 ```
 
-**`BaseElement`** — wraps a `By` locator and `WebDriver`; provides `waitUntilVisible()`, `isDisplayed()`, `getText()` using a 10-second explicit wait. Extended by `Button`, which adds `click()` (waits for clickability first).
-
-**`BasePage`** — holds `WebDriver chrome` and a `WebDriverWait` (10 s). Requires subclasses to implement `isPageLoaded()`. `HomePage` checks for `.b-top-navigation`; `CartPage` checks for `.cart-form`.
-
-**`BaseTest`** — JUnit `@BeforeEach`/`@AfterEach` manage the `ChromeDriver` lifecycle. Exposes `chrome`, `actions`, and `wait` to subclasses. `OnlinerTests` extends this and contains all actual test methods.
-
 ### Navigation flow
 
 Tests call page methods that return the next page object (e.g., `homePage.openCart()` returns a `CartPage`), then assert on that page's state via its public methods.
