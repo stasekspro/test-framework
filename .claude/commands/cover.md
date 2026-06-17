@@ -10,4 +10,4 @@ $ARGUMENTS
 Do not stop until:
 1. `mvn test` shows BUILD SUCCESS with the new test included
 2. code-reviewer has approved the code (VERDICT: APPROVED)
-3. All CRITICAL review issues are fixed and tests are still green
+3. All review issues are fixed and tests are still green
