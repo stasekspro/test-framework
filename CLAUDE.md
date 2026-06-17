@@ -2,36 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
-
-Selenium WebDriver UI test framework for onliner.by, built with Java 17, Maven, JUnit 5 (Jupiter), and Selenium 4. Tests run against a live Chrome browser.
-
-## Build & Test Commands
-
-```bash
-# Compile
-mvn clean compile
-
-# Run all tests
-mvn test
-
-# Run a single test class
-mvn test -Dtest=OnlinerTests
-
-# Run a single test method
-mvn test -Dtest=OnlinerTests#openCartPageWhenCartIconClicked
-```
-
-No linting or formatting plugins are configured.
-
-## Local Setup Requirement
-
-`BaseTest.java` has hardcoded Chrome paths for Windows:
-- `C:\chromedriver-win64\chromedriver.exe` — ChromeDriver binary
-- `C:\Program Files\Google\Chrome\Application\chrome.exe` — Chrome binary
-
-These must exist locally for tests to run. WebDriverManager is included as a dependency but not yet wired up to replace these hardcoded paths.
-
 ## Architecture: Page Object Model
 
 The project uses POM (Page Object Model) strictly — UI structure lives in `src/main/java/pages/`, tests live in `src/test/java/tests/`.

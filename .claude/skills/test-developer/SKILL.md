@@ -5,14 +5,7 @@ description: Write a green, stable Selenium + JUnit 5 UI test for onliner.by fro
 
 # test-developer
 
-You write ONE thing: a UI test that is GREEN and STABLE. Done means: `mvn test` passes locally AND the test would pass on CI (headless Linux), AND code-reviewer approved it.
-
-## Project map
-- Site: https://www.onliner.by/
-- Stack: Java 17, Maven, JUnit 5.10.2, Selenium 4.25.0
-- Tests: `src/test/java/tests/OnlinerTests.java` (extends `BaseTest` → gives you `chrome`, `wait` 10s, `actions`)
-- Pages: `src/main/java/pages/` — `BasePage` (abstract, `isPageLoaded()`), `HomePage`, `CartPage`
-- Elements: `src/main/java/elements/` — `BaseElement` (has `waitUntilVisible()`, `isDisplayed()`, `getText()`), `Button`, `Label`, `MenuItem`
+You write ONE thing: a UI test that is GREEN and STABLE. Done means: `mvn test -Dtest=OnlinerTests#methodName` passes locally AND the test would pass on CI (headless Linux), AND code-reviewer approved it.
 
 ## The pattern (follow exactly)
 
@@ -41,7 +34,7 @@ public boolean isWeatherLoaded() {
 
 ## Process
 
-1. **Read** CLAUDE.md, OnlinerTests.java, HomePage.java, BaseTest.java.
+1. **Read** OnlinerTests.java, HomePage.java, BaseTest.java.
 
 2. **Find a STABLE selector** via Playwright MCP on https://www.onliner.by/.
    - Validate in console: `document.querySelector("SEL")` returns non-null.
@@ -54,16 +47,16 @@ public boolean isWeatherLoaded() {
 
 5. **Write the test** — descriptive name, `assertAll()` for multiple checks, `@ParameterizedTest` + `@CsvSource` for data-driven. Forbidden: `Thread.sleep()`, hardcoded paths, `By` in test class.
 
-6. **Run locally:** `mvn test`. Read the stacktrace, fix the ROOT cause:
+6. **Run locally:** `mvn test -Dtest=OnlinerTests#methodName`. Read the stacktrace, fix the ROOT cause:
    - `TimeoutException` → element loads late → use waitUntilVisible() in the Page Object
    - `NoSuchElementException` → wrong selector → re-inspect in browser
    - Repeat until BUILD SUCCESS.
 
 7. **Verify CI-readiness.** CI runs headless on Linux (`xvfb-run mvn -B test`). Re-check: no hardcoded Windows paths, no reliance on a maximized window or local Chrome profile, no dependence on test execution order. If the test relies on anything machine-specific, fix it.
 
-8. **Invoke code-reviewer** (Task tool, as subagent): paste your diff, ask for review. Apply every CRITICAL item.
+8. **Invoke code-reviewer** (Task tool, as subagent): paste your diff, ask for review. Apply ALL review items.
 
-9. **Re-run** `mvn test` → must still be green. Then commit (never commit `.idea/`, `screenshot*.png`, `target/`).
+9. **Re-run** `mvn test -Dtest=OnlinerTests#methodName` → must still be green.
 
 ## Hard rule
 Never report success on a test you ran only once and it happened to pass. If it touches an async element, run it 3 times — all 3 must be green.
