@@ -26,10 +26,6 @@ A diff of changed Java files from a Selenium + JUnit 5 framework for onliner.by.
 - `wait.until(ExpectedConditions...)` in a test class → move into Page Object.
 - Element not initialized in the Page Object constructor → REJECT.
 
-### Package structure
-- UI element class (Button, Label, MenuItem, custom) in `pages/` → goes in `elements/`.
-- Page class in `elements/` → goes in `pages/`.
-
 ### Style
 - Variables named `actual`, `alwaysPresent`, `result`, `temp`, `list` → demand descriptive names.
 - Selector using nth-child index → require a stable semantic class instead.
