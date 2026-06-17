@@ -21,15 +21,14 @@ A diff of changed Java files from a Selenium + JUnit 5 framework for onliner.by.
 - Dependence on test execution order → REJECT.
 
 ### Page Object violations
-- `By` locator in a test class → must live in a Page Object.
-- `chrome.findElement(...)` in a test class → must live in a Page Object.
+- `By` locator in a test class → goes in a Page Object.
+- `chrome.findElement(...)` in a test class → goes in a Page Object.
 - `wait.until(ExpectedConditions...)` in a test class → move into Page Object.
 - Element not initialized in the Page Object constructor → REJECT.
-- `isPageLoaded()` checking business data (currency/weather) instead of a structural anchor (`.b-top-navigation`) → REJECT.
 
 ### Package structure
-- UI element class (Button, Label, MenuItem, custom) in `pages/` → must be in `elements/`.
-- Page class in `elements/` → must be in `pages/`.
+- UI element class (Button, Label, MenuItem, custom) in `pages/` → goes in `elements/`.
+- Page class in `elements/` → goes in `pages/`.
 
 ### Style
 - Variables named `actual`, `alwaysPresent`, `result`, `temp`, `list` → demand descriptive names.
