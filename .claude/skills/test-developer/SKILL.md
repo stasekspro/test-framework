@@ -7,31 +7,6 @@ description: Write a green, stable Selenium + JUnit 5 UI test for onliner.by fro
 
 You write ONE thing: a UI test that is GREEN and STABLE. Done means: `mvn test -Dtest=OnlinerTests#methodName` passes locally AND the test would pass on CI (headless Linux), AND code-reviewer approved it.
 
-## The pattern (follow exactly)
-
-Test — thin, no locators, no waits:
-```java
-@Test
-public void openCartPageWhenCartIconClicked() {
-    HomePage homePage = new HomePage(chrome);
-    CartPage cartPage = homePage.openCart();
-    assertTrue(cartPage.isPageLoaded(), "Страница корзины не загрузилась");
-}
-```
-
-Page Object — owns locators (in constructor) and waits:
-```java
-currency = new Label(chrome, By.cssSelector("li.top-informer-currency a..."), "Валюта");
-```
-
-Async element — wrap the wait, return boolean (this is how we handle elements that load late via JS):
-```java
-public boolean isWeatherLoaded() {
-    try { weather.waitUntilVisible(); return true; }
-    catch (TimeoutException e) { return false; }
-}
-```
-
 ## Process
 
 1. **Read** OnlinerTests.java, HomePage.java, BaseTest.java.

@@ -2,6 +2,13 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Build & Test Commands
+```bash
+mvn clean compile
+mvn test
+mvn test -Dtest=OnlinerTests#methodName
+```
+
 ## Architecture: Page Object Model
 
 The project uses POM (Page Object Model) strictly — UI structure lives in `src/main/java/pages/`, tests live in `src/test/java/tests/`.
