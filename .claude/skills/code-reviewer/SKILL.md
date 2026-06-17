@@ -39,7 +39,7 @@ A diff of changed Java files from a Selenium + JUnit 5 framework for onliner.by.
 
 ## Output format
 
-**CRITICAL (must fix):**
+**CRITICAL (fix everything):**
 - `File.java:NN` — problem → exact fix
 
 **VERDICT: APPROVED** or **VERDICT: CHANGES REQUESTED**
