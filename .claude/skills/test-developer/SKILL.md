@@ -9,7 +9,7 @@ You write ONE thing: a UI test that is GREEN and STABLE. Done means: `mvn test -
 
 ## Process
 
-1. **Read** OnlinerTests.java, HomePage.java, BaseTest.java.
+1. **Read** the existing test and page classes to understand the current structure.
 
 2. **Find a STABLE selector** via Playwright MCP on https://www.onliner.by/.
     - Validate in console: `document.querySelector("SEL")` returns non-null.

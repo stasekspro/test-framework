@@ -25,7 +25,7 @@ Run `git diff` yourself to get the full set of changed lines - do not rely on a 
 ### Style
 - Variables named `actual`, `alwaysPresent`, `result`, `temp`, `list` → demand descriptive names.
 - Selector using nth-child index → require a stable semantic class instead.
-- 3+ identical test cases running the same logic → require `@ParameterizedTest` + `@CsvSource`.
+- Multiple test cases running the same logic with different input data → require `@ParameterizedTest` + `@CsvSource`.
 - Assertion message that doesn't say what was expected → require a descriptive message.
 
 ## Output format
