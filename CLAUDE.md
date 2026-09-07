@@ -13,13 +13,13 @@ mvn test -Dtest=OnlinerTests#methodName
 
 The project uses POM (Page Object Model) strictly — UI structure lives in `src/main/java/pages/`, tests live in `src/test/java/tests/`.
 
-### Inheritance chain
+### Inheritance & where things go
 
-```
-BaseElement  ←  Button
-BasePage     ←  HomePage, CartPage
-BaseTest     ←  OnlinerTests
-```
+- Element wrappers (`Button`, `Label`, ...) extend `BaseElement` and live in `elements/`.
+- Page classes extend `BasePage`, implement `isPageLoaded()`, and live in `pages/`.
+- Test classes extend `BaseTest` and live in `tests/`.
+
+New classes follow the same rule, so this stays accurate as the project grows.
 
 ### Navigation flow
 
