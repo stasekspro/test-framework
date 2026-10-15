@@ -12,7 +12,8 @@ Run `git diff` yourself to get the full set of changed lines - do not rely on a 
 
 ## CRITICAL - block merge if any present
 
-### Flakiness (the #1 enemy)
+### Flakiness red flags
+You can't tell from the code alone whether a test is actually flaky - test-developer confirms that by running it repeatedly, not this review. Flag these patterns anyway, since they are known causes of flakiness:
 - An element is fetched and asserted on with no wait in the path (`chrome.findElement(...).isDisplayed()` / `.getText()` asserted immediately) → REJECT. Fix: get the element through a `waitUntilVisible()`-backed Page Object method and assert on that.
 - `Thread.sleep(...)` anywhere → REJECT. Use explicit waits (`waitUntilVisible()` or `WebDriverWait`).
 
